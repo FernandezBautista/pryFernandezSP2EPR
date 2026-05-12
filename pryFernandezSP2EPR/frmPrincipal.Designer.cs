@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPrincipal));
             this.btnMigrar = new System.Windows.Forms.Button();
             this.lstInfo = new System.Windows.Forms.ListBox();
             this.btnAñadir = new System.Windows.Forms.Button();
@@ -48,7 +49,7 @@
             this.lstInfo.FormattingEnabled = true;
             this.lstInfo.Location = new System.Drawing.Point(13, 41);
             this.lstInfo.Name = "lstInfo";
-            this.lstInfo.Size = new System.Drawing.Size(320, 225);
+            this.lstInfo.Size = new System.Drawing.Size(320, 121);
             this.lstInfo.TabIndex = 1;
             // 
             // btnAñadir
@@ -65,12 +66,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(345, 285);
+            this.ClientSize = new System.Drawing.Size(345, 172);
             this.Controls.Add(this.btnAñadir);
             this.Controls.Add(this.lstInfo);
             this.Controls.Add(this.btnMigrar);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmPrincipal";
-            this.Text = "frmPrincipal";
+            this.Text = "Migracion de Datos";
             this.Load += new System.EventHandler(this.frmPrincipal_Load);
             this.ResumeLayout(false);
 

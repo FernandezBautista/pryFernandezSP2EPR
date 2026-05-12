@@ -1,0 +1,3 @@
+Id;Nombre;Categoria;Precio
+100;HD 80 GB;2;190
+101;Teclado 102;6;25

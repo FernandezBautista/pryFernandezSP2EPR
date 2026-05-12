@@ -12,7 +12,7 @@ namespace pryFernandezSP2EPR
         public frmPrincipal()
         {
             InitializeComponent();
-        }      
+        }
 
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
@@ -41,50 +41,49 @@ namespace pryFernandezSP2EPR
 
         private void btnMigrar_Click(object sender, EventArgs e)
         {
+            if (archivosSeleccionados.Count == 0)
             {
-                if (archivosSeleccionados.Count == 0)
+                lstInfo.Items.Add("Seleccioná los archivos primero.");
+                return;
+            }
+
+            CConexion objBase = new CConexion();
+            string rutaMdb = "Distribuidora.mdb";
+
+            if (objBase.CrearBase(rutaMdb))
+            {
+                lstInfo.Items.Clear();
+                foreach (string ruta in archivosSeleccionados)
                 {
-                    lstInfo.Items.Add("Seleccione archivos antes de empezar.");
-                    return;
-                }
+                    string nombreArchivo = Path.GetFileNameWithoutExtension(ruta).ToUpper();
+                    string sql = "";
+                    string tablaIdentificada = "";
 
-                CConexion objBase = new CConexion();
-                string rutaMdb = "Distribuidora.mdb";
-
-                if (objBase.CrearBase(rutaMdb))
-                {
-                    lstInfo.Items.Clear();
-
-                    foreach (string ruta in archivosSeleccionados)
+                    if (nombreArchivo.Contains("CATEGORIA"))
                     {
-                        string tabla = Path.GetFileNameWithoutExtension(ruta);
-                        lstInfo.Items.Add("Migrando datos de " + tabla + "...");
-
-                        string sql = "";
-                        if (tabla == "Categorias")
-                        {
-                            sql = "CREATE TABLE Categorias (IdCategoria INT, Nombre TEXT(50))";
-                        }
-                        else if (tabla == "Articulos")
-                        {
-                            sql = "CREATE TABLE Articulos (IdArticulo INT, Nombre TEXT(50), IdCategoria INT, Precio DOUBLE)";
-                        }
-
-                        int registros = objBase.MigrarDatos(ruta, sql, tabla);
-
-                        if (registros != -1)
-                        {
-                            lstInfo.Items.Add("Se incorporaron: " + registros + " registros nuevos.");
-                        }
-                        else
-                        {
-                            lstInfo.Items.Add("Error: " + objBase.ObtenerError());
-                        }
-                        lstInfo.Items.Add("");
+                        tablaIdentificada = "Categorias";
+                        sql = "CREATE TABLE Categorias (IdCategoria INT, Nombre TEXT(50))";
                     }
-                    lstInfo.Items.Add("Migración finalizada.");
+                    else if (nombreArchivo.Contains("ARTICULO"))
+                    {
+                        tablaIdentificada = "Articulos";
+                        sql = "CREATE TABLE Articulos (IdArticulo INT, Nombre TEXT(50), IdCategoria INT, Precio DOUBLE)";
+                    }
+
+                    if (tablaIdentificada != "")
+                    {
+                        lstInfo.Items.Add("Migrando " + tablaIdentificada + "...");
+                        int r = objBase.MigrarDatos(ruta, sql, tablaIdentificada);
+
+                        if (r != -1) lstInfo.Items.Add("Archivo migrado Filas: " + r);
+                        else lstInfo.Items.Add("Error: " + objBase.ObtenerError());
+                    }
                 }
+                lstInfo.Items.Add("Proceso terminado.");
             }
         }
+   
     }
 }
+        
+    

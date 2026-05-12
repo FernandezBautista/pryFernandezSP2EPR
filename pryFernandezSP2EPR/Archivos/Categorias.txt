@@ -1,0 +1,3 @@
+IdCategoria;NombreCategoria
+1;Procesadores
+2;Disco Rigido
